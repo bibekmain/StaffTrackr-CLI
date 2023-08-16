@@ -125,7 +125,7 @@ function addDepartment(){
         }
     ]).then((res) => {
         //query the database to add a department
-        db.query(`INSERT INTO department (name) VALUES ("${res.name}")`);
+        queryDatabase(`INSERT INTO department (name) VALUES ("${res.name}")`);
         console.log(`\n \x1b[5m\x1b[34m ${res.name} added to departments! \x1b[0m \n`);
         init();
     });
@@ -155,9 +155,10 @@ async function addRole(){
         }
     ]).then((res) => {
         //query the databse to add the role
-        db.query(`INSERT INTO role (title, salary, department_id) 
-                VALUES ("${res.title}", ${res.salary}, ${res.dept_id})`);
+        queryDatabase(`INSERT INTO role (title, salary, department_id) 
+            VALUES ("${res.title}", ${res.salary}, ${res.dept_id})`);
         console.log(`\n \x1b[5m\x1b[34m ${res.title} added to roles! \x1b[0m \n`);
+        
         init();
     })
 };
@@ -196,8 +197,9 @@ async function addEmployee(){
             
         }
     ]).then((res) => {
-        db.query(`INSERT INTO employee (first_name, last_name, role_id, manager_id)
-                Values ("${res.first_name}", "${res.last_name}", ${res.role_id}, ${res.manager_id})`);
+        //query the database to 
+        queryDatabase(`INSERT INTO employee (first_name, last_name, role_id, manager_id)
+            Values ("${res.first_name}", "${res.last_name}", ${res.role_id}, ${res.manager_id})`)
         console.log(`\n \x1b[5m\x1b[34m ${res.first_name} has been added to the employee directory! \x1b[0m \n`);
 
         init();
@@ -208,7 +210,6 @@ async function addEmployee(){
 async function updateEmployeeRole(){
     const employees = await queryDatabase("SELECT * FROM employee");
     const roles = await queryDatabase("SELECT * FROM role");
-    let employeeName; let newRole;
 
     inquirer.prompt([
         {
