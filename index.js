@@ -76,7 +76,16 @@ async function viewDepartments(runInit){
 //function that displays the roles
 async function viewRoles(){
     //query all roles
-    const roles = await queryDatabase("SELECT * FROM role");
+    const roles = await queryDatabase(`
+        SELECT
+        r1.id AS ID,
+        r1.title AS Title,
+        r1.salary AS Salary,
+        d1.name as Department
+        
+        FROM role r1
+        INNER JOIN department d1 ON r1.department_id = d1.id
+        `);
 
     console.log("\n \x1b[33m Showing All Roles: \x1b[0m");
     console.table(roles);
@@ -85,8 +94,21 @@ async function viewRoles(){
 
 //function that displays the employees
 async function viewEmployees(){
-    //query all employees
-    const employees = await queryDatabase("SELECT * FROM employee");
+    //query all employees using joins to display easy to read info
+    const employees = await queryDatabase(`
+        SELECT 
+        e1.id AS ID,
+        CONCAT(e1.first_name, ' ', e1.last_name) AS Employee,
+        r1.salary AS Salary,  
+        r1.title AS Role,
+        d1.name AS Department,
+        CONCAT(e2.first_name,' ', e2.last_name) AS Manager
+
+        FROM employee e1
+        LEFT JOIN employee e2 ON e1.manager_id = e2.id
+        INNER JOIN role r1 ON e1.role_id = r1.id
+        INNER JOIN department d1 ON r1.department_id = d1.id
+    `);
 
     console.log("\n \x1b[33m Showing All Employees: \x1b[0m");
     console.table(employees);
@@ -174,10 +196,10 @@ async function addEmployee(){
             
         }
     ]).then((res) => {
-        console.log("----- \n", res);
         db.query(`INSERT INTO employee (first_name, last_name, role_id, manager_id)
                 Values ("${res.first_name}", "${res.last_name}", ${res.role_id}, ${res.manager_id})`);
         console.log(`\n \x1b[5m\x1b[34m ${res.first_name} has been added to the employee directory! \x1b[0m \n`);
+
         init();
     });
 };
@@ -186,6 +208,7 @@ async function addEmployee(){
 async function updateEmployeeRole(){
     const employees = await queryDatabase("SELECT * FROM employee");
     const roles = await queryDatabase("SELECT * FROM role");
+    let employeeName; let newRole;
 
     inquirer.prompt([
         {
@@ -195,13 +218,16 @@ async function updateEmployeeRole(){
             choices: employees.map((employee) => ({name: employee.first_name + " " + employee.last_name, value: employee.id}))
         },
         {
-            name: "new_role",
+            name: "role_id",
             type: "list",
             message: "Select the role to change this employee to:",
             choices: roles.map((role) => ({name: role.title, value: role.id}))
         }
     ]).then((res) => {
-        console.log(res);
+        db.query("UPDATE employee SET ? WHERE ?", [{role_id: res.role_id}, {id: res.employee_id}]);
+        console.log(`\n \x1b[5m\x1b[34m Updated employee ${res.employee_id}'s role to role id ${res.role_id} \x1b[0m \n`);
+
+        init();
     });
 };
 
