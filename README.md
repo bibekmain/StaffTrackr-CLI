@@ -29,7 +29,7 @@ The Staff Trackr CLI is a powerful and intuitive Command Line Interface applicat
 
 
 ## Usage
-Navigate through the main menu by using the arrow keys and select the action you want to perform.  
+Navigate through the main menu by using the arrow keys and select the action you want to perform. Access the usage video through [this](https://drive.google.com/file/d/1SDnMxyzD2Cn8nL9TLmJWDIKQhK3AlyMD/view?usp=sharing) link.
 
 ### Usage Tutorial:  
 ![A GIF showing how to use Staff Trackr CLI](https://github.com/bibekmain/StaffTrackr-CLI/blob/main/assets/EmployeeTracker.gif?raw=true)
