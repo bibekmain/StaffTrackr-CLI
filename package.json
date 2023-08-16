@@ -1,0 +1,16 @@
+{
+  "name": "stafftrackr-cli",
+  "version": "1.0.0",
+  "description": "A Command Line Interface application that allows the management of an employee database",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "inquirer": "^8.2.4",
+    "mysql2": "^3.6.0"
+  }
+}
