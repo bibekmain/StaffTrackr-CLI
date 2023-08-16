@@ -5,7 +5,9 @@ const inquirer = require("inquirer");
 const db = mysql.createConnection(
     {
         host: 'localhost',
+        //enter your MySql username here
         user: 'root',
+        //enter your MySql password here
         password: 'password',
         database: 'employee_db'
     },
@@ -158,7 +160,7 @@ async function addRole(){
         queryDatabase(`INSERT INTO role (title, salary, department_id) 
             VALUES ("${res.title}", ${res.salary}, ${res.dept_id})`);
         console.log(`\n \x1b[5m\x1b[34m ${res.title} added to roles! \x1b[0m \n`);
-        
+
         init();
     })
 };
